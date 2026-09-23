@@ -1,12 +1,11 @@
 # Westeros Graphics Layer Southbound Interface
 
-**RDK GRAPHICS SOUTHBOUND INTERFACE | DRAFT**
+**RDK GRAPHICS SOUTHBOUND INTERFACE 
 
 *DRM-based platform adaptation for the Westeros compositor and GL renderer*
 
 | Document field | Value |
 |---|---|
-| Status | Draft for technical review |
 | Component | `westeros-gl-drm / westeros-gl` |
 | Pattern | Aligned with the Westeros SoC HAL and `rdk-halif-libdrm` documentation structure |
 | Interface category | Legacy graphics-layer southbound interface |
@@ -32,8 +31,6 @@
 12. General Graphics Code Flow
 13. SoC Implementation Requirements
 14. Validation Checklist
-15. Appendix A. Proposed Stable ABI
-16. Appendix B. Open Decisions
 
 ## 1. Acronyms, Terms and Abbreviations
 
@@ -278,37 +275,3 @@ The graphics interface supplies platform objects and execution services. Wayland
 | Concurrency | Documented thread model, racing create/destroy, termination during operations. |
 | Robustness | Memory, fd, GPU object, mapping, and thread leak checks. |
 | End-to-end | Representative Wayland client rendering through compositor, renderer, provider, and driver. |
-
-## Appendix A. Proposed Stable ABI
-
-> **Proposal:** The following is a recommended packaging model, not a claim about the current source ABI.
-
-| Element | Recommendation |
-|---|---|
-| Context | Opaque `WstGLContext` handle returned by a versioned create/init API. |
-| Versioning | Major/minor ABI version plus structure-size fields for extensibility. |
-| Capabilities | Query provider, display, native-window, pixmap, DMA-BUF, modifier, synchronization, and multi-display support. |
-| Native window descriptor | Width, height, format preference, usage, and optional display identifier. |
-| Pixmap descriptor | Plane count, fds, offsets, strides, modifiers, dimensions, format, protection, fences. |
-| Status | Stable common status enum plus optional provider diagnostic code/text. |
-| Callbacks | Optional hot-plug/presentation callbacks with explicit thread and cancellation rules. |
-| Testing | Common vendor test suite tagged by mandatory and capability-dependent cases. |
-
-## Appendix B. Open Decisions
-
-| Decision | Review question |
-|---|---|
-| Current header baseline | Which commit and provider header becomes the normative 1.0 source? |
-| Context model | Is the current API process-global, or should it become explicitly instance-based? |
-| EGL ownership | Which layer owns `EGLDisplay`, `EGLContext`, and `EGLSurface`? |
-| Native types | Can provider native types remain ABI-stable across vendor SDK upgrades? |
-| Presentation | Does the provider only supply native objects, or also own KMS/page-flip presentation? |
-| Buffer exchange | Is DMA-BUF required for 1.0, and which formats/modifiers are mandatory? |
-| Synchronization | Are implicit fences sufficient, or is explicit sync required? |
-| Display changes | Are mode changes and hot-plug in scope? |
-| Relationship to LibDRM | Should LibDRM remain an implementation dependency rather than a separately governed HAL? |
-| Relationship to AIDL graphics HALs | How will legacy WstGL coexist with graphics-player and plane-control interfaces? |
-
-## Source and Drafting Notes
-
-This draft follows the same specification pattern as the earlier Westeros SoC HAL document. Source-grounded statements are limited to the public repository path, publicly described WstGL API families, Westeros component descriptions, and internal material identifying the graphics-layer interface and publication intent. All additional normative language is presented as a requirement proposal for architecture and SoC-vendor review.
